@@ -17,7 +17,6 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e) => {
-    console.log('ehl');
     e.preventDefault();
     const {email,password}=formData;
         if(!email){

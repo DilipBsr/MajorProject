@@ -8,6 +8,7 @@ import Login from './pages/Auth/Login'
 import { ToastContainer, toast } from 'react-toastify';
 import Course from './pages/Course/Course'
 import HandleRefresh from './Components/HandleRefresh'
+import AlphaTest from './pages/Course/AlphaText'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -29,6 +30,7 @@ function App() {
           element={<PrivateRoute element={<Course/>}/>}/>
           <Route path="/account" 
           element={<PrivateRoute element={<Course/>}/>}/>
+          <Route path='/test' element={<AlphaTest/>}/>
         </Routes>
         <ToastContainer />
       </div>

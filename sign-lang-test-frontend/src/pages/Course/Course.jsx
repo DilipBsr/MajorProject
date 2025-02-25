@@ -3,6 +3,7 @@ import Buttons from '../../Components/Buttons';
 import { useNavigate } from 'react-router-dom';
 import NewNavbar from '../../Components/NewNavbar';
 import Footer from '../../Components/Footer';
+import { Link } from 'react-router-dom';
 
 function Course() {
   const [user,setUser]=useState('');
@@ -38,9 +39,11 @@ function Course() {
         <h2 className="text-lg font-bold">Sign Alphabets</h2>
         <p className="text-gray-500">Basic Test</p>
         
+        <Link to="/test">
         <button className="mt-4 bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 hover:cursor-pointer">
           Start
         </button>
+        </Link>
       </div>
     </div>
     </div>
