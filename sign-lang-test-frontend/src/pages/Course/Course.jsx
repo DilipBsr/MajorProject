@@ -4,53 +4,71 @@ import { useNavigate } from 'react-router-dom';
 import NewNavbar from '../../Components/NewNavbar';
 import Footer from '../../Components/Footer';
 import { Link } from 'react-router-dom';
+import TestField from '../../Components/TestField';
 
 function Course() {
-  const [user,setUser]=useState('');
-  useEffect(()=>{
+  const [user, setUser] = useState('');
+  useEffect(() => {
     setUser(localStorage.getItem('userName'))
-  },[])
-  
-  const navigate=useNavigate();
-  
-  const handleLogout=(e)=>{
+  }, [])
+
+  const navigate = useNavigate();
+
+  const handleLogout = (e) => {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
-    setTimeout(()=>{
+    setTimeout(() => {
       navigate('/home');
-    },1000)
+    }, 1000)
   }
   return (
     <>
-      <NewNavbar element={<Buttons name='Log Out'/>}/>
+      <NewNavbar element={<Buttons name='Log Out' />} />
+        <div className=' flex flex-wrap justify-center gap-10  '>
+      
+          <TestField 
+          image='src\assets\number.jpg'
+          heading='Number Test' subHeading='Test Sign Language Number' 
+          linkTo='/numbertest'
+          lockTo={false} />
 
-      <div className='flex-grow h-screen'>
+            <TestField 
+            image='src/assets/signAlpha.jpg'
+            heading='Alphabet Test' subHeading='Test Sign Language Alphabet '
+            lockTo={false}
+            />
 
-      <div className='flex justify-center'>
-      <div className=" flex justify-center max-w-sm bg-white shadow-lg rounded-lg p-4">
-      <div className="relative bg-blue-400 p-3 rounded-t-lg flex justify-center items-center">
-        <img
-          src="src\assets\1905.i126.008.P.m005.c30.deaf and dumb set.jpg"
-          alt="Sign Test"
-          className="w-full h-32 object-cover rounded-lg"
-          />
-      </div>
-      <div className="p-4">
-        <h2 className="text-lg font-bold">Sign Alphabets</h2>
-        <p className="text-gray-500">Basic Test</p>
-        
-        <Link to="/test">
-        <button className="mt-4 bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 hover:cursor-pointer">
-          Start
-        </button>
-        </Link>
-      </div>
-    </div>
-    </div>
-    </div>
-    <div className=''>
-      <Footer/>
-    </div>
+            <TestField 
+            image='src/assets/IndianAlpha.jpg'
+            heading='Indian Alphabet Test' subHeading='Test Sign Language Alphabet in India '
+            lockTo={false}
+            />
+
+            <TestField
+             image='src/assets/basicword.jpg'
+             heading='Basic Word Test' subHeading='Test Basic word using Sign Language' 
+            linkTo='/bwordtest'
+            />
+
+            <TestField 
+             image='src/assets/wh.jpg'
+            heading='WH Question Test' subHeading='Test your question word using sign language' 
+            linkTo='/iwordtest'
+            />
+            <TestField 
+            image='src/assets/basicSentence.jpg'
+            heading='Basic Sentence Test' subHeading='Test small sentence using sign language' 
+            linkTo='/bsentencetest'/>
+         
+            <TestField 
+            image='src/assets/talk.jpg'
+            heading='Basic Conversation Test' 
+            subHeading='Test basic conversation using sign language'
+            linkTo='/bconversationtest' />
+
+
+        </div>
+        <Footer />
     </>
   )
 }

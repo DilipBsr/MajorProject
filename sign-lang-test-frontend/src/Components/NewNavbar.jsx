@@ -20,9 +20,10 @@ function NewNavbar({element}) {
     <>
      <nav className="bg-blue-600 p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
-        <a href="/home" className="text-white text-xl font-bold pl-5">
-          Testing⌛
-        </a>
+      <ul className="logo w-20 rounded-full ml-15 "onClick={() => navigate('/')}>
+            <img src="\src\assets\logo.png" alt="logo" 
+            className="m-[-10px] rounded-full border"/>
+          </ul>
   
         <div className='flex'>
         <button onClick={handleLogout}>

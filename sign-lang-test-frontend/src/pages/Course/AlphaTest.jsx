@@ -65,7 +65,7 @@ const AlphaTest = () => {
         landmarks.forEach((point) => {
           ctx.beginPath();
           ctx.arc(point.x * canvasRef.current.width, point.y * canvasRef.current.height, 5, 0, 2 * Math.PI);
-          ctx.fillStyle = "red";
+          ctx.fillStyle = "blue";
           ctx.fill();
         });
       });

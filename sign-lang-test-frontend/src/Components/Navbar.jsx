@@ -12,7 +12,8 @@ function Navbar() {
           className="lg:mr-10 cursor-pointer flex items-center space-x-4"
         >
           <ul className="logo w-20 rounded-full "onClick={() => navigate('/')}>
-            <img src="\src\assets\image.png" alt="logo" />
+            <img src="\src\assets\logo.png" alt="logo" 
+            className="m-[-10px] rounded-full border"/>
           </ul>
           
         </div>
