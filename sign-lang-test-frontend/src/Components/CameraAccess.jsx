@@ -2,11 +2,11 @@ import React, { useRef, useEffect, useState } from "react";
 import Webcam from "react-webcam";
 import { Hands } from "@mediapipe/hands";
 import * as cam from "@mediapipe/camera_utils";
-import NewNavbar from "../../Components/NewNavbar";
-import Buttons from "../../Components/Buttons";
+import NewNavbar from "./NewNavbar";
+import Buttons from "./Buttons";
 import { useNavigate,Link } from "react-router-dom";
 
-const AlphaTest = () => {
+const CameraAccess = ({testName="Basic Sign Language Test"}) => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const [cameraOn, setCameraOn] = useState(false);
@@ -75,16 +75,17 @@ const AlphaTest = () => {
   return (
     <>
     <NewNavbar element={<Buttons name='Log Out'/>}/>
-    <div className="bg-gray-900 text-white">
+    <div className="bg-gray-900 h-screen w-screen">
+
+    <div className="bg-gray-900 text-white w-screen">
       <Link to="/course">
       <div className="flex justify-start p-5">
-        <Buttons name='⬅Back'/>
+        <Buttons name='Back'/>
       </div>
       </Link>
    
-      <div className="justify-center min-h-screen flex flex-col items-center">
-
-      <h1 className="text-2xl font-bold mb-4">Sign Language Test</h1>
+      <div className="justify-center  flex flex-col items-center">
+      <h1 className="text-2xl font-bold mb-4">{testName}</h1>
       <div className="relative">
         {cameraOn && (
           <>
@@ -107,10 +108,16 @@ const AlphaTest = () => {
           Stop Camera
         </button>
       </div>
+      <Link to='/download'> 
+        <div className='p-20'>
+        <Buttons name="Download Certificate"/>
       </div>
+      </Link>
+      </div>
+    </div>
     </div>
     </>
   );
 };
 
-export default AlphaTest;
+export default CameraAccess;

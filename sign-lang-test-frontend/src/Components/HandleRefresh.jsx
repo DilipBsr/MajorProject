@@ -11,7 +11,7 @@ function HandleRefresh({setIsAuth}) {
       if(location.pathname==='/'
         ||location.pathname==='/login'|| location.pathname==='/signup'
       ){
-        navigate('/course',{replace:false})
+        navigate('/test',{replace:false})
       }
     }else{
       setIsAuth(false);

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Buttons from '../../Components/Buttons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Outlet } from 'react-router-dom';
 import NewNavbar from '../../Components/NewNavbar';
 import Footer from '../../Components/Footer';
 import { Link } from 'react-router-dom';
 import TestField from '../../Components/TestField';
 
-function Course() {
+function Test() {
   const [user, setUser] = useState('');
   useEffect(() => {
     setUser(localStorage.getItem('userName'))
@@ -73,4 +73,4 @@ function Course() {
   )
 }
 
-export default Course
+export default Test

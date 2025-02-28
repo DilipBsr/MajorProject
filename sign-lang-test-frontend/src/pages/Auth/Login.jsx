@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link ,useNavigate} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { handleError, handleSuccess } from "../../Components/Toast";
-import Course from "../Course/Course";
+import Test from "../Test/Test";
 import Navbar from "../../Components/Navbar";
 
 const Login = () => {
@@ -16,6 +16,7 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const {email,password}=formData;
@@ -41,7 +42,7 @@ const Login = () => {
             localStorage.setItem('token',jwtToken);
             localStorage.setItem('userName',userName);
             setTimeout(()=>{
-              navigate('/Course');
+              navigate('/test');
             },1000)
           }else if(error){
             const detail=error?.details[0].message;
@@ -60,7 +61,9 @@ const Login = () => {
     <nav className=" top-0 z-50">
             <Navbar/>
       </nav>
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div
+    style={{backgroundImage:`url('/src/assets/home')`}}
+    className=" flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
         <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
         <form onSubmit={handleSubmit}>

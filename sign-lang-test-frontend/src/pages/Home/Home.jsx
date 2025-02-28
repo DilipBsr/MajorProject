@@ -16,7 +16,7 @@ function Home({imagepath="src/assets/homebg.jpg"}) {
         backgroundImage: `url(${imagepath})`,
         backgroundRepeat:"no-repeat"
       }}
-      className="bg-contain min-h-screen ">
+      className="bg-contain min-h-screen bg-white">
         <div className='block lg:w-180 w-50 md:w-90 sm:w-90 sm:pt-20 sm:pl-10 p-5 lg:pt-30 lg:pl-30
         md:pl-15 md:pt-15 '>
           <p className="sm:text-3xl lg:text-6xl 
@@ -34,6 +34,9 @@ function Home({imagepath="src/assets/homebg.jpg"}) {
             <Buttons name="Get Started"/>
           </button>
         </div>
+          <img 
+          className='flex justify-center items-center w-screen pt-40 p-30'
+          src="/src/assets/slider.png" alt="" srcset="" />
       </div>  
       <Footer/>
     </>
