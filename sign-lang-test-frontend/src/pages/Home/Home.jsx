@@ -34,9 +34,9 @@ function Home({imagepath="src/assets/homebg.jpg"}) {
             <Buttons name="Get Started"/>
           </button>
         </div>
-          <img 
+          {/* <img 
           className='flex justify-center items-center w-screen pt-40 p-30'
-          src="/src/assets/slider.png" alt="" srcset="" />
+          src="/src/assets/slider.png" alt="" srcset="" /> */}
       </div>  
       <Footer/>
     </>

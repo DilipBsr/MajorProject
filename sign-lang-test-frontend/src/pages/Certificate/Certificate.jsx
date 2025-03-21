@@ -1,14 +1,12 @@
 import React from 'react'
 import Buttons from '../../Components/Buttons'
 
-function Certificate() {
-  return (
-    <>
-      <div className='bg-amber-400 '>
-          <img src="src/assets/images.png" alt="" srcset="" />
-      </div>
-    </>
-  )
+function Certificate({testName = "Basic sign language", user = "Dilip" }) {
+return (
+  <>
+    <img src="src/assets/images.png" alt="" />
+  </>
+)
 }
 
 export default Certificate

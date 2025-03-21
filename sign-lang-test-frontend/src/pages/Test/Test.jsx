@@ -35,6 +35,7 @@ function Test() {
             <TestField 
             image='src/assets/signAlpha.jpg'
             heading='Alphabet Test' subHeading='Test Sign Language Alphabet '
+            linkTo='/alphatest'
             lockTo={false}
             />
 

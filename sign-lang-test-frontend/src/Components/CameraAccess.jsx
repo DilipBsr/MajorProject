@@ -78,7 +78,7 @@ const CameraAccess = ({testName="Basic Sign Language Test"}) => {
     <div className="bg-gray-900 h-screen w-screen">
 
     <div className="bg-gray-900 text-white w-screen">
-      <Link to="/course">
+      <Link to="/test">
       <div className="flex justify-start p-5">
         <Buttons name='Back'/>
       </div>

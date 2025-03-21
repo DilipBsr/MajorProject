@@ -12,6 +12,7 @@ import TestRoute from './pages/Test/TestRoute'
 import NumberTest from './pages/Test/NumberTest'
 import Certificate from './pages/Certificate/Certificate'
 import Download from './pages/Certificate/Download'
+import Model from './Components/Model'
 
 
 function App() {
@@ -39,8 +40,14 @@ function App() {
         <Route path='/numbertest' 
           element={<NumberTest/>}/>
 
+        <Route path='/alphatest' 
+          element={<Model/>}/>
+
       <Route path='/download' 
           element={<Download/>}/>
+
+      <Route path='/certificate' 
+          element={<Certificate/>}/>
 
           <Route path="/account"
             element={<PrivateRoute element={<Download/>} />} />
