@@ -3,6 +3,7 @@ from flask_cors import CORS
 from ultralytics import YOLO
 import cv2
 import numpy as np
+import math
 import io
 
 app = Flask(__name__)
@@ -41,7 +42,7 @@ def translate():
                 
                 detections.append({
     "label": model.names[class_id],  # Keep label as just the class name
-    "confidence": confidence * 100,  # Send confidence as a separate numeric value
+    "confidence": math.floor(confidence* 100),  # Send confidence as a separate numeric value
     "x1": x1,
     "y1": y1,
     "x2": x2,

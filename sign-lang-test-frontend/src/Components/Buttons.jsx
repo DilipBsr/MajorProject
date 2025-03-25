@@ -1,8 +1,6 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
 
 function Buttons({name}) {
-  const navigate=useNavigate();
   return (
     <>
   
