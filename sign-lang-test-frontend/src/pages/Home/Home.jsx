@@ -4,13 +4,12 @@ import Footer from '../../Components/Footer'
 import Buttons from '../../Components/Buttons'
 import { useNavigate } from 'react-router-dom'
 import NewNavbar from '../../Components/NewNavbar'
-import { image } from '@tensorflow/tfjs'
 
 function Home({imagepath="src/assets/homebg.jpg"}) {
   const navigate=useNavigate();
   return (
     <>
-       <NewNavbar/>
+       <NewNavbar element={<Buttons name='Log Out' />} />
       <div 
       style={{
         backgroundImage: `url(${imagepath})`,

@@ -32,7 +32,7 @@ useEffect(()=>
   {
     setCorrect(0)
   },[]);
-
+  
 const navigate=useNavigate();
 
 const startVideo = async () => {
@@ -161,7 +161,6 @@ const startVideo = async () => {
         })
       }
     );
-    alert("completed")
     const data=await response.json();
     if(!response.ok){
       throw new Error(data.error || "Failed to submit test result");

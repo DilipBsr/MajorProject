@@ -13,7 +13,7 @@ function NewNavbar({ element }) {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
     setTimeout(() => {
-      navigate('/home');
+      navigate('/login');
     }, 1000)
   }
   return (

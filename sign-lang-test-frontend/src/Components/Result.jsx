@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import NewNavbar from './NewNavbar'
 import { useState,useEffect,useContext } from 'react';
 import UserContext from '../Context/UserContext';
+import { div } from '@tensorflow/tfjs';
 
 
-
+const passingScore=60;
 
 const Result = ({category,totalSign}) => {
   const [user,setUser]=useState('');
@@ -33,15 +34,15 @@ const Result = ({category,totalSign}) => {
           <span
             key={index}
             className={`text-5xl transition-transform transform ${"text-yellow-500  animate-pulse-star"}`}
-          >
+            >
             🌟
           </span>
         );
       } else if (index === fullStars && halfStar) {
         return (
           <span
-            key={index}
-            className={`text-5xl transition-transform transform ${"text-yellow-300"}`}
+          key={index}
+          className={`text-5xl transition-transform transform ${"text-yellow-300"}`}
           >
               ★  {/* Half star symbol */}
           </span>
@@ -59,6 +60,34 @@ const Result = ({category,totalSign}) => {
     });
   };
 
+  const feedback=(score)=>{
+    if(score<60 && score>55){
+      return(
+        <>
+        <div className='text-xl font-extrabold text-amber-800 animation-bounce'>
+           Nice Try!!
+        </div>
+        </>
+      )
+    }else if(score>=60 && score<=75){
+      return(
+        <>
+         <div className='text-xl font-extrabold text-amber-800 transition-shadow'>
+           Great Job!!
+        </div>
+        </>
+      )
+    }else if(score>75){
+      return(
+        <>
+        <div className='text-xl font-extrabold text-amber-800'>
+           Excellent Job!!
+        </div>
+        </>
+      )
+    }
+
+  }
   const navigate = useNavigate();
 
   return (
@@ -70,6 +99,7 @@ const Result = ({category,totalSign}) => {
       <h2 className="text-4xl font-bold mb-4 text-blue-800">Test Result</h2>
       <div className="stars my-4">
         {renderStars(score)}
+        {feedback(score)}
       </div>
       <div className='bg-blue-800 p-10 font-semibold text-amber-100 rounded-2xl'>
       <p className="text-lg mb-4">{user} You completed the <span className="font-semibold">{category}</span> Test !!</p>
@@ -78,7 +108,7 @@ const Result = ({category,totalSign}) => {
       </div>
       <p>Matched Signs: {correct}/{totalSign}</p>
       {/* Show feedback based on score */}
-      {score >= 60 ? (
+      {score >= passingScore ? (
         <div className="success mt-4">
           <p className="text-green-300 font-semibold">🎉 Congratulations! You passed!</p>
           <a
@@ -92,7 +122,7 @@ const Result = ({category,totalSign}) => {
         <div className="failure mt-4">
           <p className="text-red-400 font-semibold">❌ Sorry, you didn't pass this time.</p>
           <br />
-          <p className='font-light '>You need at least 60% to pass.</p>
+          <p className='font-light '>You need at least {passingScore}% to pass.</p>
           <p> Don't worry, try again!</p>
           <button
             onClick={() => navigate(`/${category}`)} 
