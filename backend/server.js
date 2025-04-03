@@ -6,13 +6,19 @@ require("./Models/db");
 
 const app = express();
 const authRoutes = require("./routes/authRoutes");
+
+const testRoutes = require('./routes/testRoutes');
+
 const courseRoutes=require("./routes/courseRoutes");
+
 const ensureAuth = require("./Middleware/Auth");
 app.use(express.json());
 app.use(cors());
 
 app.use("/auth", authRoutes);
 // app.use("/course",ensureAuth, courseRoutes);
+
+app.use('/api', testRoutes);
 
 
 app.get('/hello',(req,res)=>{

@@ -9,9 +9,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import Test from './pages/TestPage/Test'
 import HandleRefresh from './Components/HandleRefresh'
 import NumberTest from './pages/Module/NumberTest'
-import Certificate from './pages/Certificate/Certificate'
-import Download from './pages/Certificate/Download'
 import AlphaTest from './pages/Module/AlphaTest'
+import Account from './pages/Profile/Account'
+import Result from './Components/Result'
+import UserContextProvider from './Context/UserContextProvider'
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
     <>
       <HandleRefresh setIsAuth={setIsAuth} />
       <div className=''>
+        <UserContextProvider> 
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path='/home' element={<Home imagepath={"./src/assets/homepage.jpg"} />} />
@@ -37,18 +39,21 @@ function App() {
           <Route path='/numbertest'
             element={<NumberTest />} />
 
-          <Route path='/alphatest'
-            element={<AlphaTest />} />
+            <Route path='/alphabet'
+              element={<AlphaTest />} />
+            <Route path="/alpharesult"
+              element={<PrivateRoute element={<Result category={'alphabet'} totalSign={26}/>} />} />
 
-          <Route path='/download'
-            element={<Download />} />
-
-          <Route path='/certificate'
-            element={<Certificate />} />
 
           <Route path="/account"
-            element={<PrivateRoute element={<Download/>} />} />
+            element={<PrivateRoute element={<Account/>} />} />
+
+
+          
+
+
         </Routes>
+        </UserContextProvider>
         <ToastContainer />
       </div>
     </>

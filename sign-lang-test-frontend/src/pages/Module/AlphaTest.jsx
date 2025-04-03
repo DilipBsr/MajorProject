@@ -1,5 +1,7 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback,useContext } from "react";
+import UserContext from "../../Context/UserContext";
 import PopUp from "../../Components/PopUp";
+import {useNavigate} from 'react-router-dom';
 
 
 const BASE_URL = "http://localhost:5000"; // Update with your Flask API URL
@@ -15,16 +17,23 @@ const AlphaTest = () => {
   const [visited, setVisited] = useState(new Array(26).fill(false));
   const [showPopup, setShowPopup] = useState(false);
 
-
-  let stream = null;
+  const {correct,setCorrect}=useContext(UserContext);
+  const userId=localStorage.getItem('userId');
+  const category='alphabet';
+  const total=26;
+  
+let stream = null;
 useEffect(() => {
   return () => {
      stopVideo();  // Ensure stopVideo is called
   };
 }, []);
+useEffect(()=>
+  {
+    setCorrect(0)
+  },[]);
 
-
-
+const navigate=useNavigate();
 
 const startVideo = async () => {
   console.log("Video Startted!");
@@ -116,7 +125,7 @@ const startVideo = async () => {
       setDetectedConfidence(0);
     }
   };
-  const checkAlphabetMatch = (label, confidence) => {
+  const checkAlphabetMatch = useCallback((label, confidence) => {
     const currentAlphabet = ALPHABETS[currentAlphabetIndex];
     setTimeout(()=>{
       if (label === currentAlphabet && confidence >= 50) {
@@ -125,15 +134,45 @@ const startVideo = async () => {
           newVisited[currentAlphabetIndex] = true;
           return newVisited;
         });
+        setCorrect(prevCorrect => prevCorrect + 1);
         setShowPopup(true);  // Show the popup
       }
     },300)
    
-  };
-  
+  },[currentAlphabetIndex]);
   const handleClosePopup = () => {
     setShowPopup(false);
     setCurrentAlphabetIndex(prev => prev + 1);
+  };
+
+  async function complete(userId,category,correct_signs,total_signs){
+    stopVideo();
+    try{
+      const response=await fetch("http://localhost:5001/api/create",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+        },
+        body:JSON.stringify({
+          userId,
+          category,
+          correct_signs,
+          total_signs,
+        })
+      }
+    );
+    alert("completed")
+    const data=await response.json();
+    if(!response.ok){
+      throw new Error(data.error || "Failed to submit test result");
+    }
+    console.log("Test submitted successfully:", data);
+    console.log(`Score: ${data.score}%`);
+    return data;
+  }catch(error){
+    console.error("Error in Test Completion!!",error.message);
+  }
+
   };
   
   const nextAlphabet = () => {
@@ -143,15 +182,16 @@ const startVideo = async () => {
     setCurrentAlphabetIndex(prev => (26 + (prev - 1) % 26) % 26);
   };
   useEffect(() => {
+
     let interval;
     if (isCameraOn && !showPopup) {
       interval = setInterval(captureFrame, 500);
     }
     return () => clearInterval(interval);
   }, [isCameraOn,showPopup,nextAlphabet,prevAlphabet,checkAlphabetMatch]);
-
+  
   return (
-  <>
+    <>
     <div className="flex flex-col items-center bg-blue-100 min-h-screen">
     
       <div className="text-4xl w-full text-center font-bold font-sans text-stone-100  bg-blue-600 p-1 mb-3">Alphabet Test</div>
@@ -208,9 +248,14 @@ const startVideo = async () => {
         ))}
       </div>
 
-
+      <button className="text-center flex justify-center text-xl bg-green-500 p-3 rounded-xl font-bold text-blue-100 cursor-pointer hover:bg-green-600 mb-5" onClick={()=>{
+        complete(userId,category,correct,total);
+        navigate('/alpharesult')
+      }}>
+      Complete Test
+    </button>
     </div>
-    {showPopup && (
+  {showPopup && (
   <PopUp
     label={ALPHABETS[currentAlphabetIndex]}
     confidence={detectedConfidence}
@@ -218,8 +263,9 @@ const startVideo = async () => {
       setShowPopup(false);
       setCurrentAlphabetIndex(prev => prev + 1);
     }}
-  />
+    />
 )}
+    
 
   </>
   );
