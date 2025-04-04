@@ -13,6 +13,9 @@ import AlphaTest from './pages/Module/AlphaTest'
 import Account from './pages/Profile/Account'
 import Result from './Components/Result'
 import UserContextProvider from './Context/UserContextProvider'
+import TestHistory from './Components/TestHistory'
+import Dashboard from './pages/Profile/Dashboard'
+import PageNotFound from './Components/PageNotFound'
 
 
 function App() {
@@ -46,12 +49,15 @@ function App() {
 
 
           <Route path="/account"
-            element={<PrivateRoute element={<Account/>} />} />
+            element={<PrivateRoute element={<Account/>} />}/>
+
+<Route path="/history"
+            element={<PrivateRoute element={<Dashboard/>} />}/>
 
 
           
 
-
+          <Route path='/*' element={<PageNotFound/>}/>
         </Routes>
         </UserContextProvider>
         <ToastContainer />

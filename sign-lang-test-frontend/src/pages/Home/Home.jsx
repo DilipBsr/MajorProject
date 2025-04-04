@@ -9,16 +9,17 @@ function Home({imagepath="src/assets/homebg.jpg"}) {
   const navigate=useNavigate();
   return (
     <>
+      <div className='flex flex-col h-screen justify-between'>
        <NewNavbar element={<Buttons name='Log Out' />} />
       <div 
       style={{
         backgroundImage: `url(${imagepath})`,
         backgroundRepeat:"no-repeat"
       }}
-      className="bg-contain min-h-screen bg-white">
-        <div className='block lg:w-180 w-50 md:w-90 sm:w-90 sm:pt-20 sm:pl-10 p-5 lg:pt-30 lg:pl-30
+      className="bg-contain lg:min-h-screen bg-white">
+        <div className='block lg:w-140 w-50 md:w-90 sm:w-90 sm:pt-20 sm:pl-10 p-5 lg:pt-30 lg:pl-30
         md:pl-15 md:pt-15 '>
-          <p className="sm:text-3xl lg:text-6xl 
+          <p className="sm:text-3xl lg:text-5xl 
           text-xl
           font-sans font-bold text-blue-600">
             Test Your Sign Language Skill
@@ -38,6 +39,7 @@ function Home({imagepath="src/assets/homebg.jpg"}) {
           src="/src/assets/slider.png" alt="" srcset="" /> */}
       </div>  
       <Footer/>
+      </div>
     </>
   )
 }

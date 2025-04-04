@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import NewNavbar from './NewNavbar'
 import { useState,useEffect,useContext } from 'react';
 import UserContext from '../Context/UserContext';
-import { div } from '@tensorflow/tfjs';
 
 
 const passingScore=60;

@@ -22,9 +22,11 @@ function Test() {
   }
   return (
     <>
+
       <NewNavbar element={<Buttons name='Log Out' />} />
+
+        <h1 className='text-center font-extrabold text-4xl text-blue-500'>Test Modules</h1>
         <div className=' flex flex-wrap justify-center gap-10  '>
-      
           <TestField 
           image='src\assets\number.jpg'
           heading='Number Test' subHeading='Test Sign Language Number' 

@@ -19,6 +19,7 @@ const AlphaTest = () => {
 
   const {correct,setCorrect}=useContext(UserContext);
   const userId=localStorage.getItem('userId');
+  const user=localStorage.getItem('userName');
   const category='alphabet';
   const total=26;
   
@@ -155,12 +156,14 @@ const startVideo = async () => {
         },
         body:JSON.stringify({
           userId,
+          user,
           category,
           correct_signs,
           total_signs,
         })
       }
     );
+    
     const data=await response.json();
     if(!response.ok){
       throw new Error(data.error || "Failed to submit test result");

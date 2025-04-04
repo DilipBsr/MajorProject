@@ -3,7 +3,7 @@ const Test = require('../Models/testSchema');  // Import Test Model
 // Function to create a new test
 const createTest = async (req, res) => {
     try {
-        const { userId, category, correct_signs, total_signs } = req.body;
+        const { userId,user, category, correct_signs, total_signs } = req.body;
 
         if (!userId || !category || correct_signs === undefined || total_signs === undefined) {
             return res.status(400).json({ error: "All fields are required" });
@@ -15,6 +15,7 @@ const createTest = async (req, res) => {
         // Save test to database
         const newTest = new Test({
             userId,
+            user,
             category,
             score,
             correct_signs,
