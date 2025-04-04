@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState, useCallback,useContext } from "reac
 import UserContext from "../../Context/UserContext";
 import PopUp from "../../Components/PopUp";
 import {useNavigate} from 'react-router-dom';
+import Alert from "../../Components/Alert";
 
 
 const BASE_URL = "http://localhost:5000"; // Update with your Flask API URL
@@ -16,6 +17,7 @@ const AlphaTest = () => {
   const [currentAlphabetIndex, setCurrentAlphabetIndex] = useState(0);
   const [visited, setVisited] = useState(new Array(26).fill(false));
   const [showPopup, setShowPopup] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   const {correct,setCorrect}=useContext(UserContext);
   const userId=localStorage.getItem('userId');
@@ -126,21 +128,35 @@ const startVideo = async () => {
       setDetectedConfidence(0);
     }
   };
+
+  
+
   const checkAlphabetMatch = useCallback((label, confidence) => {
     const currentAlphabet = ALPHABETS[currentAlphabetIndex];
+    
     setTimeout(()=>{
-      if (label === currentAlphabet && confidence >= 50) {
+      if(visited[currentAlphabetIndex]){
+        setShowAlert(true);
+        console.log("Already Matched!! ")
+      }
+      if (label === currentAlphabet && confidence >= 50 ) {
         setVisited(prev => {
           const newVisited = [...prev];
           newVisited[currentAlphabetIndex] = true;
           return newVisited;
         });
+        
         setCorrect(prevCorrect => prevCorrect + 1);
         setShowPopup(true);  // Show the popup
       }
     },300)
    
   },[currentAlphabetIndex]);
+
+  // let label='B';
+  // let confidence=80;
+  // checkAlphabetMatch(label,confidence);
+
   const handleClosePopup = () => {
     setShowPopup(false);
     setCurrentAlphabetIndex(prev => prev + 1);
@@ -174,7 +190,6 @@ const startVideo = async () => {
   }catch(error){
     console.error("Error in Test Completion!!",error.message);
   }
-
   };
   
   const nextAlphabet = () => {
@@ -183,9 +198,10 @@ const startVideo = async () => {
   const prevAlphabet = () => {
     setCurrentAlphabetIndex(prev => (26 + (prev - 1) % 26) % 26);
   };
-  useEffect(() => {
 
-    let interval;
+  
+  useEffect(() => {
+    let interval;  
     if (isCameraOn && !showPopup) {
       interval = setInterval(captureFrame, 500);
     }
@@ -267,6 +283,15 @@ const startVideo = async () => {
     }}
     />
 )}
+{showAlert && (
+  <Alert message={"Already Matched"} 
+  onClose={()=>{setShowAlert(false);
+    setCurrentAlphabetIndex(prev => prev + 1);
+  }
+  }/>
+)
+
+}
     
 
   </>
