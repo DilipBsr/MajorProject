@@ -5,13 +5,14 @@ import { useState,useEffect,useContext } from 'react';
 import UserContext from '../Context/UserContext';
 
 
-const passingScore=60;
+const passingScore=0;
 
 const Result = ({category,totalSign}) => {
   const [user,setUser]=useState('');
   const [userId,setUserId]=useState('');
   const [score,setScore]=useState(0);
   const {correct}=useContext(UserContext);
+  const categoryName=category.toLocaleUpperCase();
 
   
   useEffect(() => {
@@ -89,6 +90,26 @@ const Result = ({category,totalSign}) => {
   }
   const navigate = useNavigate();
 
+  //downloadCertificate
+  const downloadCertificate = async () => {
+    const res = await fetch('http://localhost:5001/generate-certificate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: user,
+        course: `${categoryName} SIGN TEST `,
+      }),
+    });
+  
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `certificate.pdf`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
   return (
     <>
     <NewNavbar/>
@@ -110,12 +131,12 @@ const Result = ({category,totalSign}) => {
       {score >= passingScore ? (
         <div className="success mt-4">
           <p className="text-green-300 font-semibold">🎉 Congratulations! You passed!</p>
-          <a
+          <button
             className="bg-blue-500 text-white px-4 py-2 rounded-lg mt-2 inline-block cursor-pointer hover:bg-blue-400"
-            download
+            onClick={downloadCertificate}
             >
             Download Certificate
-          </a>
+          </button>
         </div>
       ) : (
         <div className="failure mt-4">

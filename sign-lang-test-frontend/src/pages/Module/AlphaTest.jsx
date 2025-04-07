@@ -89,7 +89,7 @@ const startVideo = async () => {
     formData.append("image", blob, "frame.jpg");
     
     try {
-      const response = await fetch(`${BASE_URL}/translate`, {
+      const response = await fetch(`${BASE_URL}/predict/americanSignLanguage`, {
         method: "POST",
         body: formData,
       });

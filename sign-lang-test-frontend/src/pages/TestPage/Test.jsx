@@ -42,7 +42,8 @@ function Test() {
 
             <TestField 
             image='src/assets/IndianAlpha.jpg'
-            heading='Indian Alphabet Test' subHeading='Test Sign Language Alphabet in India '
+            heading='Indian Sign Test' subHeading='Test Sign Language Alphabet in India '
+            linkTo='/islTest'
             lockTo={false}
             />
 
