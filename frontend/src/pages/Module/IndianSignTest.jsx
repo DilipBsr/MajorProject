@@ -264,7 +264,7 @@ function IndianSignTest() {
 
         <button className="text-center flex justify-center text-xl bg-green-500 p-3 rounded-xl font-bold text-blue-100 cursor-pointer hover:bg-green-600 mb-5" onClick={() => {
           complete(userId, category, correct, total);
-          navigate('/islresult')
+          navigate('/isl-result')
         }}>
           Complete Test
         </button>

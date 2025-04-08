@@ -48,12 +48,15 @@ function App() {
 
             <Route path='/alphabet'
               element={<AlphaTest />} />
-            <Route path="/alpharesult"
+
+            <Route path="/alpha-result"
               element={<PrivateRoute element={<Result category={'Alphabet'} totalSign={26} />} />} />
 
-            <Route path="/islresult"
+            <Route path="/isl-result"
               element={<PrivateRoute element={<Result category={'Indian Alphabet'} totalSign={26} />} />} />
 
+            <Route path="/number-result"
+              element={<PrivateRoute element={<Result category={'Number'} totalSign={10} />} />} />
 
             <Route path="/account"
               element={<PrivateRoute element={<Account />} />} />

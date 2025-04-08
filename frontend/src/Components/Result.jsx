@@ -5,7 +5,7 @@ import { useState,useEffect,useContext } from 'react';
 import UserContext from '../Context/UserContext';
 
 
-const passingScore=0;
+const passingScore=60;
 
 const Result = ({category,totalSign}) => {
   const [user,setUser]=useState('');
@@ -13,6 +13,7 @@ const Result = ({category,totalSign}) => {
   const [score,setScore]=useState(0);
   const {correct}=useContext(UserContext);
   const categoryName=category.toLocaleUpperCase();
+
 
   
   useEffect(() => {
@@ -90,6 +91,13 @@ const Result = ({category,totalSign}) => {
   }
   const navigate = useNavigate();
 
+  const goBack = () => {
+    navigate(-1);
+    setTimeout(() => {
+      window.location.reload();
+    }, 300); // slight delay to ensure navigation finishes
+  };
+
   //downloadCertificate
   const downloadCertificate = async () => {
     const res = await fetch('http://localhost:5001/generate-certificate', {
@@ -145,7 +153,7 @@ const Result = ({category,totalSign}) => {
           <p className='font-light '>You need at least {passingScore}% to pass.</p>
           <p> Don't worry, try again!</p>
           <button
-            onClick={() => navigate(`/${category}`)} 
+            onClick={()=>setTimeout(goBack,500)} 
             className="bg-yellow-500 text-white hover:bg-green-500 px-4 py-2 rounded-lg mt-2 inline-block cursor-pointer"
             >
             Retake Test
