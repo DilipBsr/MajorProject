@@ -1,19 +1,19 @@
 import React from 'react'
-import './Home.css'
 import Footer from '../../Components/Footer'
 import Buttons from '../../Components/Buttons'
 import { useNavigate } from 'react-router-dom'
 import NewNavbar from '../../Components/NewNavbar'
 
-function Home({imagepath="src/assets/homebg.jpg"}) {
+function Home() {
   const navigate=useNavigate();
   return (
     <>
+
       <div className='flex flex-col h-screen justify-between'>
        <NewNavbar element={<Buttons name='Log Out' />} />
       <div 
       style={{
-        backgroundImage: `url(${imagepath})`,
+        backgroundImage: `url(./src/assets/homepage.jpg)`,
         backgroundRepeat:"no-repeat"
       }}
       className="bg-contain lg:min-h-screen bg-white">
@@ -38,6 +38,7 @@ function Home({imagepath="src/assets/homebg.jpg"}) {
           className='flex justify-center items-center w-screen pt-40 p-30'
           src="/src/assets/slider.png" alt="" srcset="" /> */}
       </div>  
+     
       <Footer/>
       </div>
     </>

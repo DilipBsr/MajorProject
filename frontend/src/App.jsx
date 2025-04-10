@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import './App.css'
 import Home from './pages/Home/Home'
-import Navbar from './Components/Navbar'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import SignUp from './pages/Auth/SignUp'
 import Login from './pages/Auth/Login'
@@ -13,7 +12,6 @@ import AlphaTest from './pages/Module/AlphaTest'
 import Account from './pages/Profile/Account'
 import Result from './Components/Result'
 import UserContextProvider from './Context/UserContextProvider'
-import TestHistory from './Components/TestHistory'
 import Dashboard from './pages/Profile/Dashboard'
 import PageNotFound from './Components/PageNotFound'
 import IndianSignTest from './pages/Module/IndianSignTest'
@@ -28,26 +26,25 @@ function App() {
   return (
     <>
       <HandleRefresh setIsAuth={setIsAuth} />
-      <div className=''>
         <UserContextProvider>
           <Routes>
             <Route path="/" element={<Navigate to="/home" />} />
-            <Route path='/home' element={<Home imagepath={"./src/assets/homepage.jpg"} />} />
+            <Route path='/home' element={<Home/>} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
 
+            <Route path="/test" element={<PrivateRoute element= {<Test />} />} >
+            </Route>
+            
+            <Route path='/test'>
+                <Route path='/test/numbertest'
+                  element={<PrivateRoute element={<NumberTest />}/>} />
+                <Route path='/test/islTest'
+                  element={<PrivateRoute element={<IndianSignTest />}/>} />
+                <Route path='/test/alphabet'
+                element={<PrivateRoute element={<AlphaTest />}/>} />
+             </Route>
 
-            <Route path="/test"
-              element={<PrivateRoute element={<Test />} />} />
-
-            <Route path='/numbertest'
-              element={<NumberTest />} />
-
-            <Route path='/islTest'
-              element={<IndianSignTest/>}/>
-
-            <Route path='/alphabet'
-              element={<AlphaTest />} />
 
             <Route path="/alpha-result"
               element={<PrivateRoute element={<Result category={'Alphabet'} totalSign={26} />} />} />
@@ -63,15 +60,11 @@ function App() {
 
             <Route path="/history"
               element={<PrivateRoute element={<Dashboard />} />} />
-
-
-
-
+              
             <Route path='/*' element={<PageNotFound />} />
           </Routes>
         </UserContextProvider>
         <ToastContainer />
-      </div>
     </>
   )
 }

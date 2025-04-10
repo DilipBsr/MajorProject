@@ -1,19 +1,20 @@
-import React, { useRef, useEffect, useState, useCallback, useContext } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import UserContext from "../../Context/UserContext";
+import { useNavigate } from "react-router-dom";
 import PopUp from "../../Components/PopUp";
-import { useNavigate } from 'react-router-dom';
 import Alert from "../../Components/Alert";
 
+const BASE_URL = "http://localhost:5000";
+const NUMBERS = Array.from({ length: 10 }, (_, i) => i + 1); // New: [1,2,...,10]
 
-const BASE_URL = "http://localhost:5000"; // Update with your Flask API URL
-const DIGIT = "0123456789".split("");
 
-function NumberTest() {const videoRef = useRef(null);
+function NumberTest() {
+  const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [detectedSign, setDetectedSign] = useState("");
+  const [detectedDigit, setDetectedDigit] = useState("");
   const [detectedConfidence, setDetectedConfidence] = useState(0);
   const [isCameraOn, setIsCameraOn] = useState(false);
-  const [currentAlphabetIndex, setCurrentAlphabetIndex] = useState(0);
+  const [currentDigitIndex, setCurrentDigitIndex] = useState(0);
   const [visited, setVisited] = useState(new Array(10).fill(false));
   const [showPopup, setShowPopup] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -23,51 +24,36 @@ function NumberTest() {const videoRef = useRef(null);
   const user = localStorage.getItem('userName');
   const category = 'numberTest';
   const total = 10;
-
-  let stream = null;
-  useEffect(() => {
-    return () => {
-      stopVideo();  // Ensure stopVideo is called
-    };
-  }, []);
-  useEffect(() => {
-    setCorrect(0)
-  }, []);
-
   const navigate = useNavigate();
 
+  useEffect(() => {
+    return () => stopVideo();
+  }, []);
+
+  useEffect(() => {
+    setCorrect(0);
+  }, []);
+
   const startVideo = async () => {
-    console.log("Video Startted!");
     try {
-      stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) videoRef.current.srcObject = stream;
       setIsCameraOn(true);
     } catch (error) {
-      console.error("Error accessing webcam:", error);
+      console.error("Webcam error:", error);
     }
   };
 
   const stopVideo = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
-      let stream = videoRef.current.srcObject;
-      let tracks = stream.getTracks();
-
-      tracks.forEach(track => {
-        track.stop();  // Stop the track
-        stream.removeTrack(track); // Remove track from stream
-      });
-
-      videoRef.current.srcObject = null;  // Clear the video stream
+    const video = videoRef.current;
+    if (video && video.srcObject) {
+      video.srcObject.getTracks().forEach(track => track.stop());
+      video.srcObject = null;
     }
     setIsCameraOn(false);
   };
 
-
-
   const captureFrame = () => {
-    console.log("Inside capture!")
     if (!isCameraOn || !videoRef.current || !canvasRef.current) return;
     const video = videoRef.current;
     const canvas = canvasRef.current;
@@ -92,205 +78,155 @@ function NumberTest() {const videoRef = useRef(null);
         body: formData,
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to get response from Flask API");
-      }
+      if (!response.ok) throw new Error("Flask API error");
 
       const data = await response.json();
       drawBoundingBox(data);
     } catch (error) {
-      console.error("Error sending frame to API:", error);
+      console.error("Prediction error:", error);
     }
   };
 
   const drawBoundingBox = (data) => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
+
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
-    if (data.detections && data.detections.length > 0) {
-      data.detections.forEach(({ x1, y1, x2, y2, label, confidence }) => {
-        context.strokeStyle = "#e190fc";
-        context.lineWidth = 4;
-        context.strokeRect(x1, y1, x2 - x1, y2 - y1);
-        context.fillStyle = "#A305d8";
-        context.font = "bold 30px Serif";
-        context.fillText(label, x1 + 5, y1 - 10);
-        setDetectedSign(label);
-        setDetectedConfidence(confidence);
-        checkAlphabetMatch(label, confidence);
-      });
+    if (data.detections?.length > 0) {
+      const { x1, y1, x2, y2, label, confidence } = data.detections[0];
+      context.strokeStyle = "#fcd34d";
+      context.lineWidth = 4;
+      context.strokeRect(x1, y1, x2 - x1, y2 - y1);
+      context.fillStyle = "#facc15";
+      context.font = "bold 30px Arial";
+      context.fillText(label, x1 + 5, y1 - 10);
+
+      setDetectedDigit(label);
+      setDetectedConfidence(confidence);
+      checkMatch(label, confidence);
     } else {
-      setDetectedSign("----");
+      setDetectedDigit("----");
       setDetectedConfidence(0);
     }
   };
 
-
-
-  const checkAlphabetMatch = useCallback((label, confidence) => {
-    const currentAlphabet = DIGIT[currentAlphabetIndex];
+  const checkMatch = (label, confidence) => {
+    const currentDigit = NUMBERS[currentDigitIndex].toString();
 
     setTimeout(() => {
-      if (visited[currentAlphabetIndex]) {
+      if (visited[currentDigitIndex]) {
         setShowAlert(true);
-        console.log("Already Matched!! ")
+        return;
       }
-      if (label === currentAlphabet && confidence >= 50) {
+      if (label === currentDigit && confidence >= 50) {
         setVisited(prev => {
-          const newVisited = [...prev];
-          newVisited[currentAlphabetIndex] = true;
-          return newVisited;
+          const updated = [...prev];
+          updated[currentDigitIndex] = true;
+          return updated;
         });
-
-        setCorrect(prevCorrect => prevCorrect + 1);
-        setShowPopup(true);  // Show the popup
+        setCorrect(prev => prev + 1);
+        setShowPopup(true);
       }
-    }, 500)
-
-  }, [currentAlphabetIndex]);
-
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
-    setCurrentAlphabetIndex(prev => prev + 1);
+    }, 500);
   };
 
-  async function complete(userId, category, correct_signs, total_signs) {
+  const nextDigit = () => setCurrentDigitIndex(prev => (prev + 1) % 10);
+  const prevDigit = () => setCurrentDigitIndex(prev => (10 + (prev - 1) % 10) % 10);
+
+  const complete = async () => {
     stopVideo();
     try {
       const response = await fetch("http://localhost:5001/api/create", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId,
-          user,
-          category,
-          correct_signs,
-          total_signs,
-        })
-      }
-      );
-
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, user, category, correct_signs: correct, total_signs: total }),
+      });
       const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to submit test result");
-      }
-      console.log("Test submitted successfully:", data);
-      console.log(`Score: ${data.score}%`);
-      return data;
+      if (!response.ok) throw new Error(data.error || "Result submission failed");
+      console.log("Submitted:", data);
+      navigate("/number-result");
     } catch (error) {
-      console.error("Error in Test Completion!!", error.message);
+      console.error("Test completion error:", error.message);
     }
   };
-
-  const nextAlphabet = () => {
-    setCurrentAlphabetIndex(prev => (prev + 1) % 10);
-  };
-  const prevAlphabet = () => {
-    setCurrentAlphabetIndex(prev => (26 + (prev - 1) % 26) % 10);
-  };
-
 
   useEffect(() => {
     let interval;
-    if (isCameraOn && !showPopup) {
-      interval = setInterval(captureFrame, 1000);
-    }
+    if (isCameraOn && !showPopup) interval = setInterval(captureFrame, 1000);
     return () => clearInterval(interval);
-  }, [isCameraOn, showPopup, nextAlphabet, prevAlphabet, checkAlphabetMatch]);
+  }, [isCameraOn, showPopup]);
 
   return (
     <>
-      <div className="flex flex-col items-center bg-blue-100 min-h-screen">
+      <div className="flex flex-col items-center bg-yellow-100 min-h-screen">
+        <div className="text-4xl w-full text-center font-bold text-white bg-yellow-500 p-2 mb-4">Number Sign Language Test</div>
 
-        <div className="text-4xl w-full text-center font-bold font-sans text-stone-100  bg-blue-600 p-1 mb-3">Number Test</div>
-
-        <div className="w-full flex flex-col text-center text-2xl font-bold font-sans rounded-2xl text-red-500">
-
-          <h2 className="">Make Sign of: <span className="text-3xl text-gray-500">"{DIGIT[currentAlphabetIndex]
-            || "Error!"}"</span></h2>
-
-
-          <h2 className="transition-transform transform scale-100">
-            Detected Sign: <span className="text-3xl font-bold text-green-600">{detectedSign} ({detectedConfidence}%)</span>
-          </h2>
-
-
+        <div className="text-2xl text-center mb-2">
+          Make Sign of: <span className="text-3xl text-gray-700">{NUMBERS[currentDigitIndex]}</span>
+        </div>
+        <div className="text-xl text-center mb-4">
+          Detected Sign: <span className="text-green-600 text-3xl font-bold">{detectedDigit} ({detectedConfidence}%)</span>
         </div>
 
-
-        <div className="relative w-[640px] h-[480px]">
+        <div className="relative w-[640px] h-[480px] mb-4">
           <video ref={videoRef} autoPlay playsInline className={`absolute top-0 left-0 w-full h-full rounded-lg shadow-lg ${isCameraOn ? "block" : "hidden"}`} />
           <canvas ref={canvasRef} className={`absolute top-0 left-0 w-full h-full border-2 border-black rounded-lg ${isCameraOn ? "block" : "hidden"}`} />
         </div>
 
-        <div className="flex justify-between pl-10 pr-10 lg:pl-35 lg:pr-35 gap-5 mt-5  w-full ">
-
-          <button onClick={prevAlphabet} className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-600 transition duration-200">Prev</button>
-
-          <button
-            onClick={isCameraOn ? stopVideo : startVideo}
-            className={`text-white rounded-lg shadow-lg transition px-4 py-2 duration-200 ${isCameraOn ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"
-              }`}>
+        <div className="flex justify-between gap-5 mt-2 w-full px-10">
+          <button onClick={prevDigit} className="bg-yellow-400 text-white px-4 py-2 rounded-lg shadow hover:bg-yellow-500">Prev</button>
+          <button onClick={isCameraOn ? stopVideo : startVideo} className={`px-4 py-2 text-white rounded-lg shadow ${isCameraOn ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}`}>
             {isCameraOn ? "Stop" : "Start"}
           </button>
-
-          <button onClick={nextAlphabet} className=" bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-600 transition duration-200">Next</button>
+          <button onClick={nextDigit} className="bg-yellow-400 text-white px-4 py-2 rounded-lg shadow hover:bg-yellow-500">Next</button>
         </div>
 
-
-
-
-        <div className="flex flex-wrap lg:w-3/6 justify-center p-5 gap-3 m-2">
-          {DIGIT.map((letter, idx) => (
+        <div className="flex flex-wrap justify-center mt-5 gap-3 w-full px-10">
+          {NUMBERS.map((digit, idx) => (
             <span
               key={idx}
-              onClick={() => setCurrentAlphabetIndex(idx)}  // Click to change the current letter
-              className={`text-2xl w-12 text-center font-bold mx-2 px-3 py-1 rounded-lg cursor-pointer 
-              ${visited[idx] ? "bg-green-500 text-stone-100" : ""}
-                ${currentAlphabetIndex === idx ? "bg-stone-100 text-blue-600 " : "bg-blue-500 text-stone-100"} 
-                `}
+              onClick={() => setCurrentDigitIndex(idx)}
+              className={`text-2xl w-12 text-center font-bold py-1 rounded-lg cursor-pointer 
+                ${visited[idx] ? "bg-green-500 text-white" : ""}
+                ${currentDigitIndex === idx ? "bg-white text-yellow-500" : "bg-yellow-500 text-white"}
+              `}
             >
-              {letter}
+              {digit}
             </span>
           ))}
         </div>
 
-        <button className="text-center flex justify-center text-xl bg-green-500 p-3 rounded-xl font-bold text-blue-100 cursor-pointer hover:bg-green-600 mb-5" onClick={() => {
-          complete(userId, category, correct, total);
-          navigate('/number-result')
-        }}>
+        <button
+          onClick={complete}
+          className="bg-green-500 text-white font-bold px-6 py-3 mt-6 rounded-lg hover:bg-green-600"
+        >
           Complete Test
         </button>
       </div>
+
       {showPopup && (
         <PopUp
-          label={DIGIT[currentAlphabetIndex]}
+          label={NUMBERS[currentDigitIndex]}
           confidence={detectedConfidence}
           onClose={() => {
             setShowPopup(false);
-            setCurrentAlphabetIndex(prev => prev + 1);
+            setCurrentDigitIndex(prev => prev + 1);
           }}
         />
       )}
       {showAlert && (
-        <Alert message={"Already Matched"}
+        <Alert
+          message={"Already Matched"}
           onClose={() => {
             setShowAlert(false);
-            setCurrentAlphabetIndex(prev => prev + 1);
-          }
-          } />
-      )
-
-      }
-
-
+            setCurrentDigitIndex(prev => prev + 1);
+          }}
+        />
+      )}
     </>
   );
 }
 
-export default NumberTest
+export default NumberTest;

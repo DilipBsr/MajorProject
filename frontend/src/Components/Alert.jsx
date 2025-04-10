@@ -1,10 +1,11 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-function Alert({message,onClose}) {
+function Alert({message="Welcome Back!!"}) {
   return (
     <>
      <div className="fixed inset-0 flex items-center justify-center bg-blue-900 bg-opacity-50 z-50">
-      <div className="bg-stone-100 p-6 rounded-lg shadow-lg text-center p-10">
+      <div className="bg-stone-100 rounded-lg shadow-lg text-center p-10">
         <h2 className="text-2xl font-bold font-sans text-green-600">🎉 {message} 🎉</h2>
         <br />
        

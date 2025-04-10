@@ -22,28 +22,26 @@ function Test() {
   }
   return (
     <>
-
       <NewNavbar element={<Buttons name='Log Out' />} />
-
         <h1 className='text-center font-extrabold text-4xl text-blue-500'>Test Modules</h1>
         <div className=' flex flex-wrap justify-center gap-10  '>
           <TestField 
           image='src\assets\number.jpg'
           heading='Number Test' subHeading='Test Sign Language Number' 
-          linkTo='/numbertest'
+          linkTo='/test/numbertest'
           lockTo={false} />
 
             <TestField 
             image='src/assets/signAlpha.jpg'
             heading='Alphabet Test' subHeading='Test Sign Language Alphabet '
-            linkTo='/alphabet'
+            linkTo='/test/alphabet'
             lockTo={false}
             />
 
             <TestField 
             image='src/assets/IndianAlpha.jpg'
             heading='Indian Sign Test' subHeading='Test Sign Language Alphabet in India '
-            linkTo='/islTest'
+            linkTo='/test/islTest'
             lockTo={false}
             />
 
@@ -72,6 +70,7 @@ function Test() {
 
         </div>
         <Footer />
+        <Outlet/>
     </>
   )
 }

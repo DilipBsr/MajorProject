@@ -11,7 +11,7 @@ function TestField({ image = "src\\assets\\isl.jpg", heading = "Basic Test", sub
   // }),[someProperty];
 
   return (
-    <div className="relative flex flex-col rounded-lg shadow-lg p-3 lg:w-80 w-70 justify-center">
+    <div className="relative flex flex-col rounded-lg shadow-2xl p-3 lg:w-80 w-70 justify-center">
       {/* Image Section */}
       <div className='h-60'>
         <img

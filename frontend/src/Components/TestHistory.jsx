@@ -1,11 +1,7 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import NewNavbar from './NewNavbar'
-import { useState,useEffect,useContext } from 'react';
-import UserContext from '../Context/UserContext';
 
-
-function TestHistory({user,category,score,correct,totalSign,date}) {
+function TestHistory({user="UserName",category="TestName",score=0,correct=0,totalSign=0,date="Date"}) {
+  
   
   const passingScore=60;
   const renderStars = (score) => {

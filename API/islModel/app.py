@@ -9,9 +9,9 @@ import io
 app = Flask(__name__)
 CORS(app)
 
-model = YOLO("digit_classifier.pt")  # Load trained YOLO model
+model = YOLO("best.pt")  # Load trained YOLO model
 
-@app.route('/predict/islTest', methods=['POST'])
+@app.route('/predict/digit', methods=['POST'])
 def translate():
     try:
         # Check if the request contains a file

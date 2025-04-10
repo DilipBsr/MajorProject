@@ -9,7 +9,7 @@ import io
 app = Flask(__name__)
 CORS(app)
 
-model = YOLO("best.pt")  # Load trained YOLO model
+model = YOLO("numberbest.pt")  # Load trained YOLO model
 
 @app.route('/predict/americanSignLanguage', methods=['POST'])
 def translate():

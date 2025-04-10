@@ -11,12 +11,8 @@ function Navbar() {
         <div
           className="lg:mr-10 cursor-pointer flex items-center space-x-4"
         >
-          {/* <ul className="logo w-20 rounded-full "onClick={() => navigate('/')}>
-            <img src="\src\assets\logo.png" alt="logo" 
-            className="m-[-10px] rounded-full border"/>
-          </ul> */}
 
-          <ul className="logo w-20 rounded-full font-bold font-sans text-blue-600 text-2xl hover:cursor-pointer " onClick={() => navigate('/')}>
+          <ul className="logo w-20 rounded-full font-bold font-sans text-blue-600 text-2xl hover:cursor-pointer " onClick={() => navigate('/test')}>
             Testing✨
           </ul>
 
@@ -31,9 +27,7 @@ function Navbar() {
         <button onClick={() => navigate('/signup')}>
           <Buttons name="SignUp" />
         </button>
-        <button onClick={() => navigate('/')}>
-          <Buttons name='🏠︎' />
-        </button>
+    
 
       </div>
     </div>

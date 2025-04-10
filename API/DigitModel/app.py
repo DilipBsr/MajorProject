@@ -1,43 +1,54 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import torch
-import torch.nn.functional as F
-import numpy as np
 import cv2
-from model import DigitClassifier
+import numpy as np
+from ultralytics import YOLO  # or your own model import
+from PIL import Image
+import io
 
 app = Flask(__name__)
 CORS(app)
 
-model = DigitClassifier()
-model.load_state_dict(torch.load("digit_classifier.pt", map_location=torch.device('cpu')))
-model.eval()
+# Load your trained YOLO model
+model = YOLO("best.pt")  # or your .pt path
 
-def preprocess_image(image_bytes):
-    img = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), cv2.IMREAD_GRAYSCALE)
-    img = cv2.resize(img, (28, 28))
-    img = img / 255.0
-    img = np.expand_dims(img, axis=(0, 1))
-    return torch.tensor(img, dtype=torch.float32)
+@app.route("/predict/digit", methods=["POST"])
+def predict_digit():
+    if "image" not in request.files:
+        return jsonify({"error": "No image uploaded"}), 400
 
-@app.route('/predict/digit', methods=['POST'])
-def predict():
-    if 'image' not in request.files:
-        return jsonify({"error": "No image provided"}), 400
+    try:
+        # Read image from request and convert to OpenCV format
+        image_file = request.files["image"]
+        image_bytes = image_file.read()
+        image = Image.open(io.BytesIO(image_bytes)).convert("L")  # Convert to grayscale (L mode)
+        image_np = np.array(image)
 
-    image_bytes = request.files['image'].read()
-    input_tensor = preprocess_image(image_bytes)
+        # If model expects 3-channel input (like YOLO), convert grayscale to BGR
+        image_bgr = cv2.cvtColor(image_np, cv2.COLOR_GRAY2BGR)
 
-    with torch.no_grad():
-        output = model(input_tensor)
-        probs = F.softmax(output, dim=1)
-        prediction = torch.argmax(probs, dim=1).item()
-        confidence = torch.max(probs).item()
+        # Run prediction
+        results = model.predict(image_bgr, conf=0.25)[0]
 
-    return jsonify({
-        "digit": prediction,
-        "confidence": round(confidence * 100, 2)
-    })
+        detections = []
+        if results.boxes is not None:
+            for box in results.boxes:
+                x1, y1, x2, y2 = map(int, box.xyxy[0])
+                confidence = round(float(box.conf[0]) * 100, 2)
+                label_index = int(box.cls[0])
+                label = model.names[label_index]
+                detections.append({
+                    "x1": x1,
+                    "y1": y1,
+                    "x2": x2,
+                    "y2": y2,
+                    "confidence": confidence,
+                    "label": label
+                })
 
-if __name__ == '__main__':
+        return jsonify({"detections": detections})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == "__main__":
     app.run(debug=True)

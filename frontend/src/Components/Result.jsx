@@ -5,7 +5,7 @@ import { useState,useEffect,useContext } from 'react';
 import UserContext from '../Context/UserContext';
 
 
-const passingScore=60;
+const passingScore=0;
 
 const Result = ({category,totalSign}) => {
   const [user,setUser]=useState('');
@@ -98,9 +98,9 @@ const Result = ({category,totalSign}) => {
     }, 300); // slight delay to ensure navigation finishes
   };
 
-  //downloadCertificate
+//downloadCertificate
   const downloadCertificate = async () => {
-    const res = await fetch('http://localhost:5001/generate-certificate', {
+    const res = await fetch('http://localhost:5001/api/download', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -124,7 +124,7 @@ const Result = ({category,totalSign}) => {
     <div className="bg-blue-200 h-screen result-container p-6 text-center">
       <div className='bg-blue-400 p-15 rounded-2xl flex flex-col items-center'>
 
-      <h2 className="text-4xl font-bold mb-4 text-blue-800">Test Result</h2>
+      <h2 className="text-4xl font-bold mb-4 text-blue-800">{category} Test Result</h2>
       <div className="stars my-4">
         {renderStars(score)}
         {feedback(score)}

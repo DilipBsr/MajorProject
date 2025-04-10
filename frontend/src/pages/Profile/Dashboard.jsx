@@ -15,11 +15,13 @@ function Dashboard() {
     date:"02-04-2025",
     certificate:"image.png",
   }
+
   return (
     <>
       <NewNavbar/>
       <div className='text-center text-3xl p-5 font-bold text-blue-500'>History</div>
       <div className='flex flex-wrap justify-center gap-10'>
+   
 
       <TestHistory 
         user={user.userName}
