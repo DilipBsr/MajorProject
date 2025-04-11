@@ -93,9 +93,6 @@ const Result = ({category,totalSign}) => {
 
   const goBack = () => {
     navigate(-1);
-    setTimeout(() => {
-      window.location.reload();
-    }, 300); // slight delay to ensure navigation finishes
   };
 
 //downloadCertificate

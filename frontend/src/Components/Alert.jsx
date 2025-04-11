@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-function Alert({message="Welcome Back!!"}) {
+function Alert({message="Welcome Back!!" , onClose}) {
   return (
     <>
      <div className="fixed inset-0 flex items-center justify-center bg-blue-900 bg-opacity-50 z-50">

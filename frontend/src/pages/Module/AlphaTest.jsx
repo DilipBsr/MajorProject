@@ -34,6 +34,10 @@ useEffect(() => {
 useEffect(()=>
   {
     setCorrect(0)
+    setDetectedSign("")
+    setCurrentAlphabetIndex(0)
+    setDetectedConfidence(0)
+    setDetectedSign("")
   },[]);
   
 const navigate=useNavigate();
@@ -210,9 +214,9 @@ const startVideo = async () => {
   
   return (
     <>
-    <div className="flex flex-col items-center bg-blue-100 min-h-screen">
+    <div className="flex flex-col items-center bg-orange-100 min-h-screen">
     
-      <div className="text-4xl w-full text-center font-bold font-sans text-stone-100  bg-blue-600 p-1 mb-3">Alphabet Test</div>
+      <div className="text-4xl w-full text-center font-bold font-sans text-stone-100  bg-orange-600 p-1 mb-3">Alphabet Test</div>
 
       <div className="w-full flex flex-col text-center text-2xl font-bold font-sans rounded-2xl text-red-500">
 
@@ -235,7 +239,7 @@ const startVideo = async () => {
 
       <div className="flex justify-between pl-10 pr-10 lg:pl-35 lg:pr-35 gap-5 mt-5  w-full ">
 
-        <button onClick={prevAlphabet} className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-600 transition duration-200">Prev</button>
+        <button onClick={prevAlphabet} className="bg-orange-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-orange-600 transition duration-200">Prev</button>
 
         <button
         onClick={isCameraOn ? stopVideo : startVideo}
@@ -245,7 +249,7 @@ const startVideo = async () => {
         {isCameraOn ? "Stop" : "Start"}
         </button>
 
-        <button onClick={nextAlphabet} className=" bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-600 transition duration-200">Next</button>
+        <button onClick={nextAlphabet} className=" bg-orange-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-orange-600 transition duration-200">Next</button>
       </div>
 
       
@@ -258,7 +262,7 @@ const startVideo = async () => {
             onClick={() => setCurrentAlphabetIndex(idx)}  // Click to change the current letter
             className={`text-2xl w-12 text-center font-bold mx-2 px-3 py-1 rounded-lg cursor-pointer 
               ${visited[idx] ? "bg-green-500 text-stone-100" : ""}
-                ${currentAlphabetIndex === idx ? "bg-stone-100 text-blue-600 " : "bg-blue-500 text-stone-100"} 
+                ${currentAlphabetIndex === idx ? "bg-stone-100 text-orange-600 " : "bg-orange-500 text-stone-100"} 
                 `}
           >
             {letter}
@@ -266,7 +270,7 @@ const startVideo = async () => {
         ))}
       </div>
 
-      <button className="text-center flex justify-center text-xl bg-green-500 p-3 rounded-xl font-bold text-blue-100 cursor-pointer hover:bg-green-600 mb-5" onClick={()=>{
+      <button className="text-center flex justify-center text-xl bg-green-500 p-3 rounded-xl font-bold text-orange-100 cursor-pointer hover:bg-green-600 mb-5" onClick={()=>{
         complete(userId,category,correct,total);
         navigate('/alpha-result')
       }}>

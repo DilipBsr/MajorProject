@@ -20,7 +20,7 @@ function IndianSignTest() {
   const { correct, setCorrect } = useContext(UserContext);
   const userId = localStorage.getItem('userId');
   const user = localStorage.getItem('userName');
-  const category = 'islTest';
+  const category = 'Indian Sign Test';
   const total = 26;
 
   let stream = null;
@@ -86,7 +86,7 @@ function IndianSignTest() {
     formData.append("image", blob, "frame.jpg");
 
     try {
-      const response = await fetch(`${BASE_URL}/predict/islTest`, {
+      const response = await fetch(`${BASE_URL}/predict/isl`, {
         method: "POST",
         body: formData,
       });
