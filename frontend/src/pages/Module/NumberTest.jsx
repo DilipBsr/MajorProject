@@ -4,7 +4,7 @@ import PopUp from "../../Components/PopUp";
 import { useNavigate } from 'react-router-dom';
 import Alert from "../../Components/Alert";
 
-const BASE_URL = "http://localhost:5000"; // Update with your Flask API URL
+const BASE_URL = "http://localhost:4998"; // Update with your Flask API URL
 const Numbers = ["1","2","3","4","5","6"
   ,"7","8","9","10"];
 
@@ -20,25 +20,36 @@ function NumberTest() {
   const [showAlert, setShowAlert] = useState(false);
 
   const { correct, setCorrect } = useContext(UserContext);
+  const [testFinished, setTestFinished] = useState(false);
   const userId = localStorage.getItem('userId');
   const user = localStorage.getItem('userName');
   const category = 'Number';
   const total = 10;
-
   let stream = null;
+  const navigate = useNavigate();
+
+
   useEffect(() => {
     return () => {
       stopVideo();  // Ensure stopVideo is called
     };
   }, []);
+
   useEffect(() => {
     setCorrect(0)
   }, []);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    const allVisited = visited.every(v => v);
+    console.log(visited);
+    if (allVisited && !testFinished) {
+      setTestFinished(true); // Mark test as finished
+      complete(userId, category, correct, total)
+        .then(() => navigate('/number-result'));
+    }
+  }, [visited]);
 
   const startVideo = async () => {
-    console.log("Video Startted!");
     try {
       stream = await navigator.mediaDevices.getUserMedia({ video: true });
       if (videoRef.current) {
@@ -65,10 +76,7 @@ function NumberTest() {
     setIsCameraOn(false);
   };
 
-
-
   const captureFrame = () => {
-    console.log("Inside capture!")
     if (!isCameraOn || !videoRef.current || !canvasRef.current) return;
     const video = videoRef.current;
     const canvas = canvasRef.current;
@@ -86,9 +94,8 @@ function NumberTest() {
   const sendToFlask = async (blob) => {
     const formData = new FormData();
     formData.append("image", blob, "frame.jpg");
-
     try {
-      const response = await fetch(`${BASE_URL}/predict/digit`, {
+      const response = await fetch(`${BASE_URL}/predict/number`, {
         method: "POST",
         body: formData,
       });
@@ -131,7 +138,6 @@ function NumberTest() {
   
   
   const checkNumberMatch = useCallback((label, confidence) => {
-    console.log(visited);
     const currentNumber = Numbers[currentNumberIndex];
 
     setTimeout(() => {
@@ -145,18 +151,12 @@ function NumberTest() {
           newVisited[currentNumberIndex] = true;
           return newVisited;
         });
-
         setCorrect(prevCorrect => prevCorrect + 1);
         setShowPopup(true);  // Show the popup
       }
     }, 300)
 
-  }, [currentNumberIndex]);
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
-    setCurrentNumberIndex(prev => prev + 1);
-  };
+  }, [currentNumberIndex,visited, testFinished]);
 
   async function complete(userId, category, correct_signs, total_signs) {
     stopVideo();
@@ -188,6 +188,19 @@ function NumberTest() {
     }
   };
 
+  const allDone=()=>{
+    var i=0;
+    Numbers.forEach(element => {
+      if(element)i++;
+    });
+    if(i==total){
+      complete(userId, category, correct, total);
+    }
+  }
+
+  useEffect(()=>{
+    allDone();
+  },Numbers);
   const nextNumber = () => {
      setCurrentNumberIndex(prev=>(prev+1)%10)
     };
@@ -247,19 +260,18 @@ function NumberTest() {
 
 
 
-        <div className="flex flex-wrap w-2/5 justify-center p-5 gap-3 m-2">
+        <div className="flex flex-wrap w-2/5 justify-center items-center p-5 gap-3 m-2">
           {Numbers.map((letter, idx) => (
             <span
               key={idx}
-              onClick={() => setCurrentNumberIndex(idx)}  // Click to change the current letter
-              className={`text-2xl w-12 text-center font-bold mx-2 px-3 py-1 rounded-lg cursor-pointer
-                bg-pink-400 
-                ${visited[idx] ? "bg-green-500 text-stone-100" : ""}
-                ${currentNumberIndex === idx ? "" : "text-stone-100"} 
-                `}
+              onClick={() => !visited[idx] && setCurrentNumberIndex(idx)}  // Click to change the current letter
+              className={`lg:text-3xl text-2xl w-18 h-16 text-center font-bold mx-2 px-3 py-3 rounded-lg cursor-pointer
+                ${visited[idx] ? "bg-green-500 text-stone-100" : "bg-pink-400"}
+                ${currentNumberIndex == idx && !visited[idx]? "bg-stone-300 text-pink-500 border-2 border-amber-50 shadow-2xl transform scale-110 " : "text-stone-100"}`}
             >
               {letter}
             </span>
+            
           ))}
         </div>
 

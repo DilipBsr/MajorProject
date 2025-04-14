@@ -15,6 +15,8 @@ import UserContextProvider from './Context/UserContextProvider'
 import Dashboard from './pages/Profile/Dashboard'
 import PageNotFound from './Components/PageNotFound'
 import IndianSignTest from './pages/Module/IndianSignTest'
+import Forgot from './pages/Auth/Forgot'
+import ResetPassword from './pages/Auth/ResetPassword'
 
 
 function App() {
@@ -32,6 +34,8 @@ function App() {
             <Route path='/home' element={<Home/>} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/forgot-password" element={<Forgot/>}/>
+            <Route path="/reset-password/" element={<ResetPassword />} />
 
             <Route path="/test" element={<PrivateRoute element= {<Test />} />} >
             </Route>
@@ -63,6 +67,7 @@ function App() {
               
             <Route path='/*' element={<PageNotFound />} />
           </Routes>
+          
         </UserContextProvider>
         <ToastContainer />
     </>

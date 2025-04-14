@@ -23,6 +23,7 @@ app.use("/api", testRoutes);
 
 app.use("/api", certificateRoutes);
 
+
 // app.use("/course",ensureAuth, courseRoutes);
 
 app.get("/hello", (req, res) => {
