@@ -5,7 +5,7 @@ import { useState,useEffect,useContext } from 'react';
 import UserContext from '../Context/UserContext';
 
 
-const passingScore=0;
+const passingScore=60;
 
 const Result = ({category,totalSign}) => {
   const [user,setUser]=useState('');

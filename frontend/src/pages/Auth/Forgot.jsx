@@ -31,9 +31,10 @@ function Forgot() {
   return (
 
     <>
-      <Navbar/>
-      <div className='h-screen flex justify-center items-center flex-wrap flex-col bg-cyan-100'>
-        
+      <div className='bg-gray-800'>
+        <Navbar/>
+      </div>
+      <div className='h-screen flex justify-center items-center flex-wrap flex-col bg-gray-100'>
       <div className='flex flex-col gap-2 w-99 items-center h-56 shadow-2xl rounded-2xl bg-white'>
         <h1 className='text-2xl font-bold text-cyan-800 m-3'>Forgot Password</h1>
         <form onSubmit={handleSubmit} className=' flex flex-col items-center'>

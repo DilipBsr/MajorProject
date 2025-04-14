@@ -214,8 +214,8 @@ function IndianSignTest() {
 
   return (
     <>
-      <div className="flex flex-col items-center bg-orange-100 min-h-screen">
-        <div className="text-4xl w-full text-center font-bold font-sans text-stone-100 bg-orange-600 p-1 mb-3">Indian Sign Language Test</div>
+      <div className="flex flex-col items-center bg-violet-100 min-h-screen">
+        <div className="text-4xl w-full text-center font-bold font-sans text-stone-100 bg-violet-600 p-1 mb-3">Indian Sign Language Test</div>
 
         <div className="w-full flex flex-col text-center text-2xl font-bold font-sans rounded-2xl text-red-500">
           <h2>Make Sign of: <span className="text-3xl text-gray-500">"{ALPHABETS[currentAlphabetIndex] || "Error!"}"</span></h2>
@@ -230,7 +230,7 @@ function IndianSignTest() {
         </div>
 
         <div className="flex justify-between pl-10 pr-10 lg:pl-35 lg:pr-35 gap-5 mt-5 w-full ">
-          <button onClick={prevAlphabet} className="bg-orange-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-orange-600 transition duration-200">Prev</button>
+          <button onClick={prevAlphabet} className="bg-violet-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-violet-600 transition duration-200">Prev</button>
 
           <button
             onClick={isCameraOn ? stopVideo : startVideo}
@@ -238,7 +238,7 @@ function IndianSignTest() {
             {isCameraOn ? "Stop" : "Start"}
           </button>
 
-          <button onClick={nextAlphabet} className="bg-orange-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-orange-600 transition duration-200">Next</button>
+          <button onClick={nextAlphabet} className="bg-violet-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-violet-600 transition duration-200">Next</button>
         </div>
 
         <div className="flex flex-wrap lg:w-4/6 justify-center p-5 gap-3 m-2">
@@ -247,15 +247,15 @@ function IndianSignTest() {
               key={idx}
               onClick={() =>setCurrentAlphabetIndex(idx)}  // Click to change the current letter
               className={`text-2xl w-16 h-14 text-center font-bold mx-2 px-3 py-3 rounded-lg cursor-pointer
-                ${visited[idx] ? "bg-green-500 text-stone-100" : "bg-orange-400"}
-                ${currentAlphabetIndex == idx && !visited[idx] ? "bg-stone-300 text-orange-500 border-2 border-amber-50 shadow-2xl transform scale-110 " : "text-stone-100"}`}
+                ${visited[idx] ? "bg-green-500 text-stone-100" : "bg-violet-400"}
+                ${currentAlphabetIndex == idx && !visited[idx] ? "bg-stone-300 text-violet-500 border-2 border-amber-50 shadow-2xl transform scale-110 " : "text-stone-100"}`}
             >
               {letter}
             </span>
           ))}
         </div>
 
-        <button className="text-center flex justify-center text-xl bg-green-500 p-3 rounded-xl font-bold text-orange-100 cursor-pointer hover:bg-green-600 mb-5" onClick={() => {
+        <button className="text-center flex justify-center text-xl bg-green-500 p-3 rounded-xl font-bold text-violet-100 cursor-pointer hover:bg-green-600 mb-5" onClick={() => {
           complete(userId, category, correct, total);
           navigate('/isl-result')
         }}>
