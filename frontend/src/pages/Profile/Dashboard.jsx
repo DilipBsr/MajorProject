@@ -3,7 +3,7 @@ import TestHistory from '../../Components/TestHistory'
 import NewNavbar from '../../Components/NewNavbar'
 import Footer from '../../Components/Footer'
 import axios from 'axios';
-import Buttons from '../../Components/Buttons';
+
 
 
 function Dashboard() {
@@ -31,10 +31,13 @@ function Dashboard() {
       const confirm = window.confirm("Are you sure you want to delete your test history?");
       if (!confirm) return;
 
-      const response = axios.delete('http://localhost:5001/api/deleteHistory', {
+      const response = axios.post('http://localhost:5001/api/deleteHistory', {
         userId: userId
       });
-      res.status(200).json({ message: "Data Deleted Successfully" });
+      fetchInfo();
+      if (response.status === 200) {
+        toast.success("Test history deleted successfully");
+      }
 
     } catch (err) {
       console.log("Error", err);
@@ -43,22 +46,24 @@ function Dashboard() {
   useEffect(() => {
     console.log("useEffect triggered");
     fetchInfo();
-  }, [], deleteData);
+  }, []);
 
 
 
   return (
     <>
       <NewNavbar />
+      <div className=''>
       <div className='text-center text-3xl p-5 font-bold text-blue-500'>History</div>
-      <div className='flex flex-wrap justify-center gap-10'>
+      <div className='flex flex-wrap flex-col gap-10'>
 
         {testInfo.length === 0 ? (
-          <p className="text-center text-gray-500">No test history found.</p>
+          <div className="text-center text-gray-500 ">No test history found.</div>
         ) : (
-          <div className='flex flex-wrap justify-center gap-10'>
-            {sortedTests.map((test, index) => (
-              <TestHistory
+          <>
+            <div className='flex flex-wrap justify-center gap-10'>
+              {sortedTests.map((test, index) => (
+                <TestHistory
                 key={index}
                 user={test.user}
                 category={test.category}
@@ -67,12 +72,23 @@ function Dashboard() {
                 score={test.score}
                 date={new Date(test.date).toLocaleDateString()}
                 certificate={test.certificate_url}
-              />
-            ))}
-          </div>
-        )}
-          <Buttons name='Delete History' color='red' onClick={()=>console.group} />
+                />
+              ))}
+            </div>
+
+            <div className='flex justify-center'>
+            <button className='bg-red-500 p-4 font-medium rounded-2xl text-white hover:bg-red-600 
+            cursor-pointer
+            '
+            onClick={() => deleteData()}>
+              Delete History
+            </button>
+            </div>
+          </>
+)
+}
       </div>
+    </div>
       <Footer />
     </>
 

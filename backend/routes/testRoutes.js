@@ -7,6 +7,7 @@ router.post('/create', createTest);
 
 router.post('/getInfo',getTestInfo)
 
-router.delete('deleteHistory',deleteTestHistory)
+router.post('/deleteHistory',deleteTestHistory)
+
 
 module.exports = router;
