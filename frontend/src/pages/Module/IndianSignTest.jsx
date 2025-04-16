@@ -24,10 +24,19 @@ function IndianSignTest() {
   const total = 26;
 
   let stream = null;
+  const run=()=>{
+
+    setVisited(prev => {
+      const newVisited = [...prev];
+      newVisited[currentAlphabetIndex] = true;
+      return newVisited;
+    });
+  }
   
   useEffect(() => {
     return () => {
       stopVideo();  // Ensure stopVideo is called
+      run();
     };
   }, []);
 
@@ -103,6 +112,7 @@ function IndianSignTest() {
       console.error("Error sending frame to API:", error);
     }
   };
+  
 
   const drawBoundingBox = (data) => {
     const canvas = canvasRef.current;
@@ -135,21 +145,21 @@ function IndianSignTest() {
   const currentAlphabet = ALPHABETS[currentAlphabetIndex];
   const matched = label.toUpperCase() === currentAlphabet.toUpperCase();
 
-  console.log("=== Checking Match ===");
-  console.log("Expected Alphabet:", currentAlphabet);
-  console.log("Detected Label:", label);
-  console.log("Confidence:", confidence);
-  console.log("Matched:", matched);
-  console.log("Already Visited:", visited[currentAlphabetIndex]);
+  // console.log("=== Checking Match ===");
+  // console.log("Expected Alphabet:", currentAlphabet);
+  // console.log("Detected Label:", label);
+  // console.log("Confidence:", confidence);
+  // console.log("Matched:", matched);
+  // console.log("Already Visited:", visited[currentAlphabetIndex]);
 
   if (matched && confidence >= 50 && !visited[currentAlphabetIndex]) {
-    console.log("✅ Correct match!");
 
     setVisited(prev => {
       const newVisited = [...prev];
       newVisited[currentAlphabetIndex] = true;
       return newVisited;
     });
+    console.log("✅ Correct match!");
     setCorrect(prev => prev + 1);
     setShowPopup(true);
   } else if (matched && visited[currentAlphabetIndex]) {
@@ -247,9 +257,12 @@ function IndianSignTest() {
               key={idx}
               onClick={() =>setCurrentAlphabetIndex(idx)}  // Click to change the current letter
               className={`text-2xl w-16 h-14 text-center font-bold mx-2 px-3 py-3 rounded-lg cursor-pointer
-                ${visited[idx] ? "bg-green-500 text-stone-100" : "bg-violet-400"}
-                ${currentAlphabetIndex == idx && !visited[idx] ? "bg-stone-300 text-violet-500 border-2 border-amber-50 shadow-2xl transform scale-110 " : "text-stone-100"}`}
-            >
+                ${!visited[idx]&& currentAlphabetIndex!=idx ?"bg-violet-400":""}
+                ${visited[idx] ? "bg-green-500 text-stone-100" : " text-stone-100"}
+                ${!visited[idx] && currentAlphabetIndex==idx ? "bg-stone-300 text-violet-500 border-2 border-amber-50 shadow-2xl transform scale-110 " : "text-stone-100"}
+              `
+            }
+              >
               {letter}
             </span>
           ))}
@@ -260,6 +273,12 @@ function IndianSignTest() {
           navigate('/isl-result')
         }}>
           Complete Test
+        </button>
+        <button className="text-center flex justify-center text-xl bg-red-500 p-3 rounded-xl font-bold text-stone-200 cursor-pointer hover:bg-red-600 mb-5" onClick={() => {
+          complete(userId, category, correct, total);
+          navigate('/test')
+        }}>
+          Quit Test
         </button>
       </div>
 

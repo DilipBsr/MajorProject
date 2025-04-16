@@ -22,7 +22,7 @@ const AlphaTest = () => {
   const { correct, setCorrect } = useContext(UserContext);
   const userId = localStorage.getItem('userId');
   const user = localStorage.getItem('userName');
-  const category = 'alphabet';
+  const category = 'Alphabet';
   const total = 26;
 
   let stream = null;
@@ -254,7 +254,10 @@ const AlphaTest = () => {
         }}>
           Complete Test
         </button>
+
+        
       </div>
+
 
       {showPopup && (
         <PopUp

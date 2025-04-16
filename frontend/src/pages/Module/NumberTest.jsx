@@ -180,8 +180,8 @@ function NumberTest() {
       if (!response.ok) {
         throw new Error(data.error || "Failed to submit test result");
       }
-      console.log("Test submitted successfully:", data);
-      console.log(`Score: ${data.score}%`);
+      // console.log("Test submitted successfully:", data);
+      // console.log(`Score: ${data.score}%`);
       return data;
     } catch (error) {
       console.error("Error in Test Completion!!", error.message);

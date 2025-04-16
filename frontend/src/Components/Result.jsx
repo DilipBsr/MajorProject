@@ -12,7 +12,6 @@ const Result = ({category,totalSign}) => {
   const [userId,setUserId]=useState('');
   const [score,setScore]=useState(0);
   const {correct}=useContext(UserContext);
-  const categoryName=category.toLocaleUpperCase();
 
 
   
