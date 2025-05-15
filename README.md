@@ -85,7 +85,7 @@ Node.js and npm installed
     npm run dev
 
 Enjoy the Web app.......
-![image](https://github.com/user-attachments/assets/f6e3cf15-b25f-4597-bbb9-82a6db260f27)
+![image](https://github.com/user-attachments/assets/0749a565-c6f3-4770-adf7-d6b30b4d62d5)
 
 ![image](https://github.com/user-attachments/assets/1aba916c-b77d-4d5a-9e58-43094fb51a2e)
 
