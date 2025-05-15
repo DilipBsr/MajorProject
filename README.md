@@ -41,12 +41,12 @@ Node.js and npm installed
       
    Terminal 2
    
-      cd ISL-Model
+      cd api/ISL-Model
       python app.py
 
   Terminal 3
       
-      cd OnlyNumberSign-Model
+      cd api/OnlyNumberSign-Model
       python app.py
 
 3. Set Up and Run the Node Backend in New Terminal
