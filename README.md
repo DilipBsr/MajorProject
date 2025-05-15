@@ -30,6 +30,7 @@ Node.js and npm installed
     pip install -r requirements.txt
     
   c. Run the Flask server:
+  
     for each module navigate to module 
     Terminal 1
       cd 
@@ -42,20 +43,31 @@ Node.js and npm installed
       python app.py
 
 3. Set Up and Run the Node Backend
+
   a. Navigate to the backend directory:
     cd ../../backend
+    
   b.create mongoDB Database and connect using driver 
     put driver in .env file
+    
   c install all dependency
     npm i
+    
   d run backend 
     npm run start
+    
 
-4. Set Up and Run the React Frontend
+5. Set Up and Run the React Frontend
+
+   
   a. Navigate to the frontend directory:
     cd ../../frontend
+
+    
   b. Install frontend dependencies:
     npm install
+
+    
   c. Start the React development server:
     npm run dev
 
