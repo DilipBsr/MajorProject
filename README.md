@@ -17,58 +17,71 @@ Node.js and npm installed
 
 🛠️ Setup Instructions
 
-1. Clone the Repository
-  git clone https://github.com/DilipBsr/MajorProject.git
-  cd MajorProject
+1. Clone the Repository:
 
-2. Set Up and Run the Flask APIs
+       git clone https://github.com/DilipBsr/MajorProject.git
+       cd MajorProject
+
+3. Set Up and Run the Flask APIs
    
   a. Navigate to the backend directory:
+  
     cd API
     
   b. Install backend dependencies:
+  
     pip install -r requirements.txt
     
-  c. Run the Flask server:
-  
+  c. Run the Flask server
     for each module navigate to module 
-    Terminal 1
-      cd 
+    Terminal 1:
+    
+      cd AmericanSignAlphabet-Model
       python app.py
-    Terminal 2
-      cd 
-      python app.py
-    Terminal 3
-      cd 
+      
+   Terminal 2
+   
+      cd ISL-Model
       python app.py
 
-3. Set Up and Run the Node Backend
+  Terminal 3
+      
+      cd OnlyNumberSign-Model
+      python app.py
+
+3. Set Up and Run the Node Backend in New Terminal
 
   a. Navigate to the backend directory:
-    cd ../../backend
+   
+    cd backend
     
   b.create mongoDB Database and connect using driver 
     put driver in .env file
     
   c install all dependency
+   
     npm i
     
   d run backend 
+    
     npm run start
     
 
-5. Set Up and Run the React Frontend
+5. Set Up and Run the React Frontend in new Terminal
 
    
   a. Navigate to the frontend directory:
-    cd ../../frontend
+    
+    cd frontend
 
     
   b. Install frontend dependencies:
+   
     npm install
 
     
   c. Start the React development server:
+    
     npm run dev
 
 
