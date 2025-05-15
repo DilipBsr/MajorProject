@@ -16,15 +16,19 @@ Python 3.8+ installed
 Node.js and npm installed
 
 🛠️ Setup Instructions
+
 1. Clone the Repository
   git clone https://github.com/DilipBsr/MajorProject.git
   cd MajorProject
 
 2. Set Up and Run the Flask APIs
+   
   a. Navigate to the backend directory:
     cd API
+    
   b. Install backend dependencies:
     pip install -r requirements.txt
+    
   c. Run the Flask server:
     for each module navigate to module 
     Terminal 1
@@ -37,7 +41,7 @@ Node.js and npm installed
       cd 
       python app.py
 
-2. Set Up and Run the Node Backend
+3. Set Up and Run the Node Backend
   a. Navigate to the backend directory:
     cd ../../backend
   b.create mongoDB Database and connect using driver 
@@ -47,7 +51,7 @@ Node.js and npm installed
   d run backend 
     npm run start
 
-3. Set Up and Run the React Frontend
+4. Set Up and Run the React Frontend
   a. Navigate to the frontend directory:
     cd ../../frontend
   b. Install frontend dependencies:
